@@ -8,9 +8,8 @@ class NeuralNetwork {
     public NeuralNetwork(int numLayers, int[] numNodes) {
         this.numLayers = numLayers;
         this.numNodes = numNodes;
-        this.weights = new double[numLayers - 1][][]; // Weights between layers
+        this.weights = new double[numLayers - 1][][]; 
 
-        // Initialize weights for each edge
         for (int i = 0; i < numLayers - 1; i++) {
             weights[i] = new double[numNodes[i]][numNodes[i + 1]];
         }
@@ -29,7 +28,6 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Input number of layers and nodes in each layer
         System.out.print("Enter the number of layers: ");
         int numLayers = scanner.nextInt();
 
@@ -41,7 +39,6 @@ public class Main {
 
         NeuralNetwork neuralNetwork = new NeuralNetwork(numLayers, numNodes);
 
-        // Set weights for each edge
         for (int layer = 1; layer < numLayers; layer++) {
             for (int nodeFrom = 1; nodeFrom <= numNodes[layer - 1]; nodeFrom++) {
                 for (int nodeTo = 1; nodeTo <= numNodes[layer]; nodeTo++) {

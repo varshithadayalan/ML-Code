@@ -1,0 +1,64 @@
+package com.example.neuralnetwork;
+
+import java.util.Scanner;
+
+public class NeuralNetwork {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the number of iterations: ");
+        int n = scanner.nextInt();
+
+        for (int i = 1; i <= n; i++) {
+            System.out.println("Iteration: " + i);
+
+            System.out.print("Enter the value of lambda: ");
+            float lambda = scanner.nextFloat();
+
+            System.out.print("Enter the value of x1: ");
+            float x1 = scanner.nextFloat();
+
+            System.out.print("Enter the value of x2: ");
+            float x2 = scanner.nextFloat();
+
+            System.out.print("Enter the value of y: ");
+            float y = scanner.nextFloat();
+
+            System.out.print("Enter the value of w1: ");
+            float w1 = scanner.nextFloat();
+
+            System.out.print("Enter the value of w2: ");
+            float w2 = scanner.nextFloat();
+
+            w1 = updateWeight(w1, lambda, x1, x2, y, w1, w2);
+            w2 = updateWeight(w2, lambda, x1, x2, y, w1, w2);
+
+            System.out.println("Updated w1: " + w1);
+            System.out.println("Updated w2: " + w2);
+        }
+
+        scanner.close();
+    }
+
+    public static float updateWeight(float weight, float lambda, float x1, float x2, float y, float w1, float w2) {
+        float gradient;
+        if (weight == w1) {
+            gradient = GradientW1(x1, x2, y, w1, w2);
+        } else {
+            gradient = GradientW2(x1, x2, y, w1, w2);
+        }
+        return weight - lambda * gradient;
+    }
+
+    public static float GradientW1(float x1, float x2, float y, float w1, float w2) {
+        float yPred = w1 * x1 + w2 * x2;
+        float error = yPred - y;
+        return 2 * error * (-x1);
+    }
+
+    public static float GradientW2(float x1, float x2, float y, float w1, float w2) {
+        float yPred = w1 * x1 + w2 * x2;
+        float error = yPred - y;
+        return 2 * error * (-x2);
+    }
+}

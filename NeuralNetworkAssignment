@@ -1,0 +1,66 @@
+import java.util.Scanner;
+
+class NeuralNetwork {
+    private int numLayers;
+    private int[] numNodes;
+    private double[][][] weights;
+
+    public NeuralNetwork(int numLayers, int[] numNodes) {
+        this.numLayers = numLayers;
+        this.numNodes = numNodes;
+        this.weights = new double[numLayers - 1][][]; 
+
+        for (int i = 0; i < numLayers - 1; i++) {
+            weights[i] = new double[numNodes[i]][numNodes[i + 1]];
+        }
+    }
+
+    public void setWeight(int layer, int nodeFrom, int nodeTo, double weight) {
+        weights[layer - 1][nodeFrom - 1][nodeTo - 1] = weight;
+    }
+
+    public double getWeight(int layer, int nodeFrom, int nodeTo) {
+        return weights[layer - 1][nodeFrom - 1][nodeTo - 1];
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the number of layers: ");
+        int numLayers = scanner.nextInt();
+
+        int[] numNodes = new int[numLayers];
+        for (int i = 0; i < numLayers; i++) {
+            System.out.print("Enter the number of nodes in layer " + (i + 1) + ": ");
+            numNodes[i] = scanner.nextInt();
+        }
+
+        NeuralNetwork neuralNetwork = new NeuralNetwork(numLayers, numNodes);
+
+        for (int layer = 1; layer < numLayers; layer++) {
+            for (int nodeFrom = 1; nodeFrom <= numNodes[layer - 1]; nodeFrom++) {
+                for (int nodeTo = 1; nodeTo <= numNodes[layer]; nodeTo++) {
+                    System.out.print("Enter weight for edge from node " + nodeFrom + " in layer " + layer +
+                            " to node " + nodeTo + " in layer " + (layer + 1) + ": ");
+                    double weight = scanner.nextDouble();
+                    neuralNetwork.setWeight(layer, nodeFrom, nodeTo, weight);
+                }
+            }
+        }
+
+        // Query weight for an edge
+        System.out.print("Enter the layer of the edge: ");
+        int layer = scanner.nextInt();
+        System.out.print("Enter the source node of the edge: ");
+        int sourceNode = scanner.nextInt();
+        System.out.print("Enter the destination node of the edge: ");
+        int destinationNode = scanner.nextInt();
+
+        double weight = neuralNetwork.getWeight(layer, sourceNode, destinationNode);
+        System.out.println("Weight of the edge: " + weight);
+
+        scanner.close();
+    }
+}
